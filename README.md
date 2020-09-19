@@ -1,6 +1,11 @@
 # Anime-vostfr
 ## Description
 Get any anime iformation like image, embed video, banner, trailer, description...
+## Npm
+https://www.npmjs.com/package/anime-vostfr
+```
+npm i anime-vostfr
+```
 ## Api
 ```js
 const api = require('anime-vostfr');
