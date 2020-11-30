@@ -3,6 +3,15 @@ const displayInfo = function(info){console.log(`[INFO]  ${info}`);}
 const displayError = function(err){console.log(`[ERROR]  ${err}`);}
 
 displayInfo("Connexion en cours...");
+//VF
+api.loadAnimeVF().then(async data => {
+    displayInfo("Connexion effectuée...");
+    //same methods as vostfr
+    console.log(data);
+});
+
+displayInfo("Connexion en cours...");
+//VOSTFR
 api.loadAnime().then(async data => {
     displayInfo("Connexion effectuée...");
 
@@ -26,9 +35,10 @@ api.loadAnime().then(async data => {
     err => {displayError(err);});
 
     /*Get embed link for video*/ 
-    displayInfo("Lien video en cours de traitement...");
+    displayInfo("Lien embed en cours de traitement...");
     await api.getEmbed(another[0].eps[0].url).then( res => {
-        console.log("Episode 1 link iframe: ",res[0]); //display first iframe link
+        console.log("Episode 1 link iframe: ",res[1]); //display first iframe link
+        another[0].embedOne = res[1];
     }, 
     err => {displayError(err);});
 },

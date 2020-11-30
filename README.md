@@ -1,7 +1,12 @@
-# Anime-vostfr
-## Description
-Get any anime iformation like image, embed video, banner, trailer, description...
-## Npm
+# Anime-vostfr 1.2.0
+## 🎉 Update
+- VF added !
+- Bug correction
+- Performance improvement
+- Search improvement
+## 📖 Description
+Get any anime in vf and vostfr with their iformations like image, embed video, banner, trailer, description, synopsys, episodes ...
+## NPM
 https://www.npmjs.com/package/anime-vostfr
 ```
 npm i anime-vostfr
@@ -9,6 +14,8 @@ npm i anime-vostfr
 ## Api
 ```js
 const api = require('anime-vostfr');
+const data = await api.loadAnime();
+const dataVF = await api.loadAnimeVF();
 ```
 ## How to use ?
 Search anime
@@ -59,10 +66,21 @@ var result = api.movieAnime(data);
 ```
 ## Example
 ```js
+const api = require('anime-vostfr');
+
 const displayInfo = function(info){console.log(`[INFO]  ${info}`);}
 const displayError = function(err){console.log(`[ERROR]  ${err}`);}
 
 displayInfo("Connexion en cours...");
+//VF
+api.loadAnimeVF().then(async data => {
+    displayInfo("Connexion effectuée...");
+    //same methods as vostfr
+    console.log(data);
+});
+
+displayInfo("Connexion en cours...");
+//VOSTFR
 api.loadAnime().then(async data => {
     displayInfo("Connexion effectuée...");
 
@@ -86,12 +104,12 @@ api.loadAnime().then(async data => {
     err => {displayError(err);});
 
     /*Get embed link for video*/ 
-    displayInfo("Lien video en cours de traitement...");
+    displayInfo("Lien embed en cours de traitement...");
     await api.getEmbed(another[0].eps[0].url).then( res => {
-        console.log("Episode 1 link iframe: ",res[0]); //display first iframe link
+        console.log("Episode 1 link iframe: ",res[1]); //display first iframe link
+        another[0].embedOne = res[1];
     }, 
     err => {displayError(err);});
-
 },
 err => {displayError(err);});
 ```
