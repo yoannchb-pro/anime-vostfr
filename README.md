@@ -1,9 +1,6 @@
-# Anime-vostfr 1.2.0
+# Anime-vostfr 1.2.1
 ## 🎉 Update
-- VF added !
-- Bug correction
-- Performance improvement
-- Search improvement
+- New api
 ## 📖 Description
 Get any anime in vf and vostfr with their iformations like image, embed video, banner, trailer, description, synopsys, episodes ...
 ## NPM
