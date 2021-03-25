@@ -1,6 +1,6 @@
-# Anime-vostfr 1.2.1
+# Anime-vostfr 1.2.2
 ## 🎉 Update
-- New api
+- Improvement
 ## 📖 Description
 Get any anime in vf and vostfr with their iformations like image, embed video, banner, trailer, description, synopsys, episodes ...
 ## NPM
@@ -33,21 +33,17 @@ Get more information (trailer + banner + description + episodes) and embed link 
 ```js
 var anime = api.searchAnime(data, name);
 /*More information*/
-await api.getMoreInformation(anime.url).then(res => {
-        console.log("Synopsis: ",res.synop);
-        console.log("Banner: ",res.banner);
-        console.log("Youtube embed trailer link: ",res.trailer);
-        console.log("Episodes: ",res.eps);
+const res = await api.getMoreInformation(another[0].url).catch(err => displayError(err));
 
-        //register episodes list for embed video
-        anime[0]["eps"] = res.eps;
-});
+console.log("Synopsis: ",res.synop);
+console.log("Banner: ",res.banner);
+console.log("Youtube embed trailer link: ",res.trailer);
+console.log("Episodes: ",res.eps);
 
 /*Embed video*/
 //here we take the first embed video for the first video (eps[0].url)
-await api.getEmbed(anime[0].eps[0].url).then( res => {
-    console.log("Episode 1 link iframe: ",res[0]); //display first iframe link
-});
+const resInfo = await api.getEmbed(another[0].eps[0].url).catch(err => displayError(err));
+console.log("Episode 1 link iframe: ",resInfo[1]); //display first iframe link
 ```
 Get popular anime
 ```js
@@ -63,22 +59,20 @@ var result = api.movieAnime(data);
 ```
 ## Example
 ```js
-const api = require('anime-vostfr');
-
+const api = require('anime-vostfr.js');
 const displayInfo = function(info){console.log(`[INFO]  ${info}`);}
 const displayError = function(err){console.log(`[ERROR]  ${err}`);}
 
 displayInfo("Connexion en cours...");
-//VF
+//VF same methods as vostfr
 api.loadAnimeVF().then(async data => {
     displayInfo("Connexion effectuée...");
-    //same methods as vostfr
     console.log(data);
-});
+}).catch(err => displayError(err));
 
 displayInfo("Connexion en cours...");
 //VOSTFR
-api.loadAnime().then(async data => {
+api.loadAnime().then(async (data) => {
     displayInfo("Connexion effectuée...");
 
     let another = api.searchAnime(data, "another");
@@ -91,22 +85,19 @@ api.loadAnime().then(async data => {
 
     /*Get more information synopsis + trailer + banner + episodes*/
     displayInfo("Informations en cours de traitement...");
-    await api.getMoreInformation(another[0].url).then(res => {
-        console.log("Synopsis: ",res.synop);
-        console.log("Banner: ",res.banner);
-        console.log("Youtube embed trailer link: ",res.trailer);
-        console.log("Episodes: ",res.eps);
-        another[0]["eps"] = res.eps;
-    },
-    err => {displayError(err);});
+    const res = await api.getMoreInformation(another[0].url).catch(err => displayError(err));
+
+    console.log("Synopsis: ",res.synop);
+    console.log("Banner: ",res.banner);
+    console.log("Youtube embed trailer link: ",res.trailer);
+    console.log("Episodes: ",res.eps);
+    another[0]["eps"] = res.eps;
 
     /*Get embed link for video*/ 
     displayInfo("Lien embed en cours de traitement...");
-    await api.getEmbed(another[0].eps[0].url).then( res => {
-        console.log("Episode 1 link iframe: ",res[1]); //display first iframe link
-        another[0].embedOne = res[1];
-    }, 
-    err => {displayError(err);});
-},
-err => {displayError(err);});
+    const resInfo = await api.getEmbed(another[0].eps[0].url).catch(err => displayError(err));
+    console.log("Episode 1 link iframe: ",resInfo[1]); //display first iframe link
+    another[0].embedOne = resInfo[1];
+    
+}).catch(err => displayError(err));
 ```

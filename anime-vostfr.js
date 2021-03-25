@@ -24,47 +24,31 @@ function getAnimeByTitle(elem, name){
  * Permet de load les animes à partir d'un fichier json
  * @returns {Promise}
  */
-exports.loadAnime = () => {
-    return new Promise((resolve, reject) => {
-        cloudscraper("https://www.neko-sama.fr/animes-search-vostfr.json").then(function(result){
-            resolve(JSON.parse(result));
-        }, function(err){reject({error: true, content: err});});
-    });
+exports.loadAnime = async () => {
+        const result = await cloudscraper("https://www.neko-sama.fr/animes-search-vostfr.json");
+        return JSON.parse(result);
 }
 
 /**
  * Permet de load les animes en vf à partir d'un fichier json
  * @returns {Promise}
  */
-exports.loadAnimeVF = () => {
-    return new Promise((resolve, reject) => {
-        cloudscraper("https://neko-sama.fr/animes-search-vf.json").then(function(result){
-            resolve(JSON.parse(result));
-        }, function(err){reject({error: true, content: err});});
-    });
+exports.loadAnimeVF = async () => {
+    const result = await cloudscraper("https://neko-sama.fr/animes-search-vf.json");
+    return JSON.parse(result);
 }
 /**
  * Permet de récuperer le lien de la vidéo en embed
  * @param {String} url 
  * @returns {Promise}
  */
-exports.getEmbed = (url) => {
-    return new Promise((resolve, reject) => {    
-        cloudscraper("https://www.neko-sama.fr"+url).then(function(html){
-            try{
-                let video = [];
-                let result = html.substring(html.indexOf('else'));
-                result = result.substring(4,result.indexOf('}')+1);
-                eval(result);
-                resolve(video);
-            } catch(e) {
-                reject({
-                    error: true,
-                    type: `Error while getting the url plz see update or verify the url`
-                });
-            }
-        }, function(err){reject({error: true, content: err});});
-    });
+exports.getEmbed = async (url) => {
+    const html = await cloudscraper("https://www.neko-sama.fr"+url);
+    let video = [];
+    let result = html.substring(html.indexOf('else'));
+    result = result.substring(4,result.indexOf('}')+1);
+    eval(result);
+    return video;
 }
 
 /**
@@ -72,36 +56,26 @@ exports.getEmbed = (url) => {
  * @param {String} url 
  * @returns {Object}
  */
-exports.getMoreInformation = (url) => {
-    return new Promise((resolve, reject) => {
-        cloudscraper("https://www.neko-sama.fr"+url).then(function(html){
-            try{
-                let parser  = new DomParser();
-                let document = parser.parseFromString(html);
-                let synop = document.getElementsByClassName('synopsis')[0].getElementsByTagName('p')[0].innerHTML;
-                let ytb = document.getElementsByTagName('iframe')[0];
-                let banner = document.getElementById('head').getAttribute('style');
-                banner = banner.substring(banner.indexOf('url('));
-                banner = banner.substring(4,banner.indexOf(')'));
-        
-                let result = html.substring(html.indexOf('episodes'));
-                result = result.substring(0,result.indexOf('$(document)'));
-                result = eval(result);
-        
-                resolve({
-                    synop: synop,
-                    banner: banner,
-                    trailer: ytb ? ytb.getAttribute('src') : false,
-                    eps: result
-                });
-            } catch(e) {
-                reject({
-                    error: true,
-                    type: `Error while getting the url plz see update or verify the url`
-                });
-            }
-        }, function(err){reject({error: true, content: err});});
-    })
+exports.getMoreInformation = async (url) => {
+    const html = await cloudscraper("https://www.neko-sama.fr"+url);
+    let parser  = new DomParser();
+    let document = parser.parseFromString(html);
+    let synop = document.getElementsByClassName('synopsis')[0].getElementsByTagName('p')[0].innerHTML;
+    let ytb = document.getElementsByTagName('iframe')[0];
+    let banner = document.getElementById('head').getAttribute('style');
+    banner = banner.substring(banner.indexOf('url('));
+    banner = banner.substring(4,banner.indexOf(')'));
+
+    let result = html.substring(html.indexOf('episodes'));
+    result = result.substring(0,result.indexOf('$(document)'));
+    result = eval(result);
+
+    return{
+        synop: synop,
+        banner: banner,
+        trailer: ytb ? ytb.getAttribute('src') : false,
+        eps: result
+    };
 }
 
 
