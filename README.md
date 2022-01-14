@@ -1,6 +1,6 @@
-# Anime-vostfr 1.2.2
+# Anime-vostfr 1.2.3
 ## 🎉 Update
-- Improvement
+- Fixed JSON.parse error while getting the animes
 ## 📖 Description
 Get any anime in vf and vostfr with their iformations like image, embed video, banner, trailer, description, synopsys, episodes ...
 ## NPM

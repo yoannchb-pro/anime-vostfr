@@ -25,7 +25,7 @@ function getAnimeByTitle(elem, name){
  * @returns {Promise}
  */
 exports.loadAnime = async () => {
-        const result = await cloudscraper("https://www.neko-sama.fr/animes-search-vostfr.json");
+        const result = await cloudscraper("https://neko-sama.fr/animes-search-vostfr.json");
         return JSON.parse(result);
 }
 
