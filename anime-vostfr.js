@@ -63,8 +63,10 @@ exports.getMoreInformation = async (url) => {
     let synop = document.getElementsByClassName('synopsis')[0].getElementsByTagName('p')[0].innerHTML;
     let ytb = document.getElementsByTagName('iframe')[0];
     let banner = document.getElementById('head').getAttribute('style');
+    let genres = document.getElementsByClassName('tag')[0].getElementsByTagName('a');
     banner = banner.substring(banner.indexOf('url('));
     banner = banner.substring(4,banner.indexOf(')'));
+    genres = Array.from(genres).map(elem => elem.innerHTML);
 
     let result = html.substring(html.indexOf('episodes'));
     result = result.substring(0,result.indexOf('$(document)'));
@@ -74,6 +76,7 @@ exports.getMoreInformation = async (url) => {
         synop: synop,
         banner: banner,
         trailer: ytb ? ytb.getAttribute('src') : false,
+        genres: genres,
         eps: result
     };
 }
